@@ -11,7 +11,7 @@ var defaultAgentSPA = 'js-agent.newrelic.com/nr-spa-1071.min.js';
 module.exports = {
   name: 'ember-new-relic',
 
-  outputPath: 'new-relic.js',
+  outputPath: '/new-relic.js',
 
   newRelicConfig: null,
 
