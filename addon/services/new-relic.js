@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Service from '@ember/service';
 
 // Method Reference:
 // https://docs.newrelic.com/docs/browser/new-relic-browser/browser-agent-spa-api
@@ -27,7 +27,7 @@ const stubbedMethod = function() {
   // This method has been stubbed out because the New Relic global is not available
 }
 
-export default Ember.Service.extend({
+export default Service.extend({
   init() {
     this._super(...arguments);
 
