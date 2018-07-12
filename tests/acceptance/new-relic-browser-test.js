@@ -10,7 +10,7 @@ test('Loading New Relic Browser', function(assert) {
   andThen(function() {
     var newRelic = window.NREUM;
 
-    assert.expect(8);
+    assert.expect(9);
 
     assert.ok(newRelic,
       'The New Relic object (NREUM) should be added to the window');
@@ -22,7 +22,6 @@ test('Loading New Relic Browser', function(assert) {
     caught by the extra Ember events like onerror */
 
     window.NREUM.noticeError = function(error) {
-
       assert.ok(true,
         'noticeError should be called by Ember.onerror');
 
@@ -33,14 +32,15 @@ test('Loading New Relic Browser', function(assert) {
         'noticeError should not be called by Ember.onerror on TransitionAborted errors.');
     };
 
-    Ember.onerror(new Error('Awh crap'));
+    assert.throws(() => {
+      Ember.onerror(new Error('Awh crap'));
+    }, 'Awh crap');
 
     const transitionError = new Error('Ember Transition Aborted Test');
     transitionError.name = "TransitionAborted";
     Ember.onerror(transitionError);
 
     Ember.Logger.error('Whoops', 'We done messed up', {});
-
   });
 });
 
@@ -48,7 +48,6 @@ test('console.error from Ember.Logger.error correctly shows messages', function(
   visit('/');
 
   andThen(function() {
-
     console.error = function (message) {
       assert.strictEqual(
         message.toString(),

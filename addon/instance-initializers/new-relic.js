@@ -17,7 +17,7 @@ export function initialize() {
     return errorName === 'TransitionAborted';
   }
 
-  function handleError(error) {
+  function handleError(error, shouldThrowError = true) {
     if (mustIgnoreError(error)) {
       return;
     }
@@ -26,6 +26,11 @@ export function initialize() {
       NREUM.noticeError(error);
     } catch(e) {
       // Ignore
+    }
+
+    // Ensure we don't throw errors with `Logger.error`
+    if (Ember.testing && shouldThrowError) {
+      throw error;
     }
 
     console.error(error);
@@ -44,7 +49,7 @@ export function initialize() {
   Ember.RSVP.on('error', handleError);
 
   Ember.Logger.error = function(...messages) {
-    handleError(generateError(messages.join(' ')));
+    handleError(generateError(messages.join(' ')), false);
   };
 }
 
