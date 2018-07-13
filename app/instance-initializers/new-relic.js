@@ -1,1 +1,4 @@
-export { default, initialize } from 'ember-new-relic/instance-initializers/new-relic';
+export {
+  default,
+  initialize
+} from 'ember-new-relic/instance-initializers/new-relic';

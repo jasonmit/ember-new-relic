@@ -4,17 +4,17 @@ module.exports = {
     ecmaVersion: 2017,
     sourceType: 'module'
   },
-  plugins: [
-    'ember'
-  ],
+  plugins: ['ember', 'prettier'],
   extends: [
     'eslint:recommended',
-    'plugin:ember/recommended'
+    'plugin:ember/recommended',
+    'plugin:prettier/recommended'
   ],
   env: {
     browser: true
   },
   rules: {
+    'prettier/prettier': 'error'
   },
   overrides: [
     // node files
@@ -25,6 +25,7 @@ module.exports = {
         'testem.js',
         'blueprints/*/index.js',
         'config/**/*.js',
+        'node-tests/**/*.js',
         'tests/dummy/config/**/*.js'
       ],
       excludedFiles: [
@@ -42,9 +43,22 @@ module.exports = {
         node: true
       },
       plugins: ['node'],
-      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        // add your custom rules and overrides for node files here
-      })
+      rules: Object.assign(
+        {},
+        require('eslint-plugin-node').configs.recommended.rules,
+        {
+          // add your custom rules and overrides for node files here
+        }
+      )
+    },
+    {
+      files: ['node-tests/**/*.js'],
+      env: {
+        qunit: true
+      },
+      rules: {
+        'node/no-unpublished-require': 'off'
+      }
     }
   ]
 };

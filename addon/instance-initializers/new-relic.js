@@ -1,7 +1,7 @@
-import { get } from "@ember/object";
-import { isNone } from "@ember/utils";
-import Ember from "ember";
-import { on } from "rsvp";
+import { get } from '@ember/object';
+import { isNone } from '@ember/utils';
+import Ember from 'ember';
+import { on } from 'rsvp';
 
 export function initialize() {
   if (!window.NREUM) {
@@ -14,8 +14,8 @@ export function initialize() {
     if (isNone(error)) {
       return false;
     }
-    const errorName = get(error, "name");
-    return errorName === "TransitionAborted";
+    const errorName = get(error, 'name');
+    return errorName === 'TransitionAborted';
   }
 
   function handleError(error, shouldThrowError = true) {
@@ -48,14 +48,14 @@ export function initialize() {
 
   Ember.onerror = handleError;
 
-  on("error", handleError);
+  on('error', handleError);
 
   Ember.Logger.error = function(...messages) {
-    handleError(generateError(messages.join(" ")), false);
+    handleError(generateError(messages.join(' ')), false);
   };
 }
 
 export default {
-  name: "new-relic",
+  name: 'new-relic',
   initialize
 };

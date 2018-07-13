@@ -1,8 +1,8 @@
-import td from "testdouble";
-import { SUPPORTED_METHODS } from "ember-new-relic/services/new-relic";
+import td from 'testdouble';
+import { SUPPORTED_METHODS } from 'ember-new-relic/services/new-relic';
 
 // For some reason, `setToken` is not documented but is called by something
-const ALL_METHODS = [...SUPPORTED_METHODS, "setToken"];
+const ALL_METHODS = [...SUPPORTED_METHODS, 'setToken'];
 
 export function createMockGlobal() {
   const object = {};

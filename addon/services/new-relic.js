@@ -1,8 +1,6 @@
 import Service from '@ember/service';
 
-// Method Reference:
-// https://docs.newrelic.com/docs/browser/new-relic-browser/browser-agent-spa-api
-export const SUPPORTED_METHODS = [
+const REGULAR_METHODS = [
   'addPageAction',
   'addRelease',
   'addToTrace',
@@ -12,6 +10,10 @@ export const SUPPORTED_METHODS = [
   'setErrorHandler',
   'setPageViewName',
   'createTimer',
+  'setCurrentRouteName'
+];
+
+const INTERACTION_RETURNING_METHODS = [
   'end',
   'getContext',
   'ignore',
@@ -19,13 +21,32 @@ export const SUPPORTED_METHODS = [
   'onEnd',
   'save',
   'setAttribute',
-  'setCurrentRouteName',
   'setName'
 ];
 
-const stubbedMethod = function() {
-  // This method has been stubbed out because the New Relic global is not available
+// Method Reference:
+// https://docs.newrelic.com/docs/browser/new-relic-browser/browser-agent-spa-api
+export const SUPPORTED_METHODS = [
+  ...REGULAR_METHODS,
+  ...INTERACTION_RETURNING_METHODS
+];
+
+class FakeBrowserInteractionEvent {
+  constructor() {
+    for (const method of INTERACTION_RETURNING_METHODS) {
+      this[method] = stubbedInteractionMethod;
+    }
+  }
 }
+
+const stubbedRegularMethod = function() {
+  // This method has been stubbed out because the New Relic global is not available
+};
+
+const stubbedInteractionMethod = function() {
+  // This method has been stubbed out because the New Relic global is not available
+  return new FakeBrowserInteractionEvent();
+};
 
 export default Service.extend({
   init() {
@@ -33,10 +54,14 @@ export default Service.extend({
 
     const { NREUM } = window;
 
-    for (const method of SUPPORTED_METHODS) {
+    for (const method of REGULAR_METHODS) {
+      this[method] = NREUM ? NREUM[method].bind(NREUM) : stubbedRegularMethod;
+    }
+
+    for (const method of INTERACTION_RETURNING_METHODS) {
       this[method] = NREUM
         ? NREUM[method].bind(NREUM)
-        : stubbedMethod;
+        : stubbedInteractionMethod;
     }
   }
 });

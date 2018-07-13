@@ -39,5 +39,5 @@ before_install:
   - npm --version
 
 script:
-  - if [ "$TEST_SUITE" = "backend" ]; then npm test; fi
+  - if [ "$TEST_SUITE" = "backend" ]; then npm test:node; fi
   - if [ "$TEST_SUITE" = "frontend" ]; then node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup; fi

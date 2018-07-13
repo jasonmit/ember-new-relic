@@ -1,6 +1,6 @@
-import Mixin from "@ember/object/mixin";
-import { inject as service } from "@ember/service";
-import { get } from "@ember/object";
+import Mixin from '@ember/object/mixin';
+import { inject as service } from '@ember/service';
+import { get } from '@ember/object';
 
 /**
  * To be mixed into the application's router
@@ -8,13 +8,13 @@ import { get } from "@ember/object";
  * Sets the current route name on each transition
  */
 export default Mixin.create({
-  newRelic: service("new-relic"),
+  newRelic: service('new-relic'),
 
   didTransition() {
     this._super(...arguments);
 
-    const routeName = get(this, "currentRouteName");
+    const routeName = get(this, 'currentRouteName');
 
-    get(this, "newRelic").setCurrentRouteName(routeName);
+    get(this, 'newRelic').setCurrentRouteName(routeName);
   }
 });
