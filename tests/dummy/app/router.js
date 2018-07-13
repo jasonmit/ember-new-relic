@@ -1,12 +1,13 @@
-import EmberRouter from '@ember/routing/router';
-import config from './config/environment';
+import EmberRouter from "@ember/routing/router";
+import config from "./config/environment";
 
-const Router = EmberRouter.extend({
+import NewRelicRouterMixin from "ember-new-relic/mixins/router";
+
+const Router = EmberRouter.extend(NewRelicRouterMixin, {
   location: config.locationType,
   rootURL: config.rootURL
 });
 
-Router.map(function() {
-});
+Router.map(function() {});
 
 export default Router;

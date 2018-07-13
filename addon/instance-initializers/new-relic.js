@@ -4,9 +4,7 @@ import Ember from "ember";
 import { on } from "rsvp";
 
 export function initialize() {
-  const { NREUM } = window;
-
-  if (!NREUM) {
+  if (!window.NREUM) {
     return;
   }
 
@@ -26,7 +24,7 @@ export function initialize() {
     }
 
     try {
-      NREUM.noticeError(error);
+      window.NREUM.noticeError(error);
     } catch (e) {
       // Ignore
     }

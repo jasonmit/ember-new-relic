@@ -2,21 +2,17 @@ import { module, test } from "qunit";
 import { setupTest } from "ember-qunit";
 import td from "testdouble";
 
+import {
+  createMockGlobal,
+  preserveGlobalNewRelic
+} from "../../helpers/mock-new-relic";
 import { SUPPORTED_METHODS } from "ember-new-relic/services/new-relic";
-
-let tempNreum;
 
 module("Unit | Service | new relic", function(hooks) {
   setupTest(hooks);
-
-  hooks.beforeEach(() => {
-    tempNreum = window.NREUM;
-  });
+  preserveGlobalNewRelic(hooks);
 
   hooks.afterEach(() => {
-    window.NREUM = tempNreum;
-    tempNreum = undefined;
-
     td.reset();
   });
 
@@ -35,10 +31,7 @@ module("Unit | Service | new relic", function(hooks) {
   test("it can proxy methods to the New Relic global", function(assert) {
     assert.expect(SUPPORTED_METHODS.length);
 
-    window.NREUM = {};
-    for (const method of SUPPORTED_METHODS) {
-      window.NREUM[method] = td.function();
-    }
+    window.NREUM = createMockGlobal();
 
     let service = this.owner.lookup("service:new-relic");
     for (const method of SUPPORTED_METHODS) {
