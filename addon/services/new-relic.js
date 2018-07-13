@@ -25,7 +25,7 @@ export const SUPPORTED_METHODS = [
 
 const stubbedMethod = function() {
   // This method has been stubbed out because the New Relic global is not available
-}
+};
 
 export default Service.extend({
   init() {
@@ -34,9 +34,7 @@ export default Service.extend({
     const { NREUM } = window;
 
     for (const method of SUPPORTED_METHODS) {
-      this[method] = NREUM
-        ? NREUM[method].bind(NREUM)
-        : stubbedMethod;
+      this[method] = NREUM ? NREUM[method].bind(NREUM) : stubbedMethod;
     }
   }
 });

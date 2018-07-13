@@ -1,9 +1,9 @@
 /* globals QUnit, test */
 
-const fs = require("fs");
-const path = require("path");
-const broccoli = require("broccoli");
-const EmberNewRelic = require("../index.js");
+const fs = require('fs');
+const path = require('path');
+const broccoli = require('broccoli');
+const EmberNewRelic = require('../index.js');
 
 QUnit.module(
   "ember-new-relic | When config['ember-new-relic'].spaMonitoring is false",
@@ -12,18 +12,18 @@ QUnit.module(
       EmberNewRelic.isValidNewRelicConfig = false;
       this.newRelicConfig = EmberNewRelic.getNewRelicConfig({
         spaMonitoring: false,
-        applicationId: "test application ID",
-        licenseKey: "test license key"
+        applicationId: 'test application ID',
+        licenseKey: 'test license key'
       });
     }
   }
 );
 
-test("wantsSPAMonitoring(newRelicConfig) returns false", function(assert) {
+test('wantsSPAMonitoring(newRelicConfig) returns false', function(assert) {
   assert.equal(EmberNewRelic.wantsSPAMonitoring(this.newRelicConfig), false);
 });
 
-test("getNewRelicTrackingCode returns classicTrackingCode", function(assert) {
+test('getNewRelicTrackingCode returns classicTrackingCode', function(assert) {
   assert.equal(
     EmberNewRelic.getNewRelicTrackingCode(this.newRelicConfig),
     EmberNewRelic.classicTrackingCode(this.newRelicConfig)
@@ -37,15 +37,15 @@ QUnit.module(
       EmberNewRelic.isValidNewRelicConfig = false;
       this.newRelicConfig = EmberNewRelic.getNewRelicConfig({
         spaMonitoring: true,
-        applicationId: "test application ID",
-        licenseKey: "test license key",
-        agent: "js-agent.newrelic.com/nr-spa-963.min.js"
+        applicationId: 'test application ID',
+        licenseKey: 'test license key',
+        agent: 'js-agent.newrelic.com/nr-spa-963.min.js'
       });
     }
   }
 );
 
-test("contentFor head-footer returns script tag with src to outputPath if importToVendor option is false and newRelicConfig is valid", function(assert) {
+test('contentFor head-footer returns script tag with src to outputPath if importToVendor option is false and newRelicConfig is valid', function(assert) {
   var newRelicConfigAfterRemovingOurCustomConfig = Object.assign(
     {},
     this.newRelicConfig
@@ -54,7 +54,7 @@ test("contentFor head-footer returns script tag with src to outputPath if import
 
   var original = EmberNewRelic.spaTrackingCode;
   EmberNewRelic.spaTrackingCode = function() {
-    return "spa!";
+    return 'spa!';
   };
 
   EmberNewRelic.newRelicConfig = this.newRelicConfig;
@@ -62,11 +62,11 @@ test("contentFor head-footer returns script tag with src to outputPath if import
   EmberNewRelic.isValidNewRelicConfig = false;
 
   try {
-    assert.equal(EmberNewRelic.contentFor("head-footer"), undefined);
+    assert.equal(EmberNewRelic.contentFor('head-footer'), undefined);
 
     EmberNewRelic.isValidNewRelicConfig = true;
     assert.equal(
-      EmberNewRelic.contentFor("head-footer"),
+      EmberNewRelic.contentFor('head-footer'),
       EmberNewRelic.asScriptTag(EmberNewRelic.outputPath)
     );
   } finally {
@@ -74,11 +74,11 @@ test("contentFor head-footer returns script tag with src to outputPath if import
   }
 });
 
-test("wantsSPAMonitoring(newRelicConfig) returns true", function(assert) {
+test('wantsSPAMonitoring(newRelicConfig) returns true', function(assert) {
   assert.equal(EmberNewRelic.wantsSPAMonitoring(this.newRelicConfig), true);
 });
 
-test("getNewRelicTrackingCode returns spaTrackingCode", function(assert) {
+test('getNewRelicTrackingCode returns spaTrackingCode', function(assert) {
   assert.equal(
     EmberNewRelic.getNewRelicTrackingCode(this.newRelicConfig),
     EmberNewRelic.spaTrackingCode(this.newRelicConfig)
@@ -86,21 +86,21 @@ test("getNewRelicTrackingCode returns spaTrackingCode", function(assert) {
 });
 
 QUnit.module(
-  "ember-new-relic | When outputPath, applicationId, and licenseKey are defined",
+  'ember-new-relic | When outputPath, applicationId, and licenseKey are defined',
   {
     setup() {
       EmberNewRelic.isValidNewRelicConfig = false;
       this.newRelicConfig = EmberNewRelic.getNewRelicConfig({
         spaMonitoring: true,
-        applicationId: "test application ID",
-        licenseKey: "test license key",
-        agent: "js-agent.newrelic.com/nr-spa-963.min.js"
+        applicationId: 'test application ID',
+        licenseKey: 'test license key',
+        agent: 'js-agent.newrelic.com/nr-spa-963.min.js'
       });
     }
   }
 );
 
-test("writeTrackingCodeTree returns a tree containing a file that has the tracking code when newRelicConfig is valid", function(assert) {
+test('writeTrackingCodeTree returns a tree containing a file that has the tracking code when newRelicConfig is valid', function(assert) {
   var newRelicConfig = (EmberNewRelic.newRelicConfig = this.newRelicConfig);
   var tree = EmberNewRelic.writeTrackingCodeTree();
   var builder;
@@ -121,7 +121,7 @@ test("writeTrackingCodeTree returns a tree containing a file that has the tracki
 
     contents = fs.readFileSync(
       path.join(results.directory, EmberNewRelic.outputPath),
-      "utf-8"
+      'utf-8'
     );
     assert.equal(
       contents,
