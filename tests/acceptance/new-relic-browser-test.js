@@ -1,62 +1,72 @@
-import Ember from 'ember';
-import { test } from 'qunit';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import Ember from "ember";
+import { module, test } from "qunit";
+import { setupApplicationTest } from "ember-qunit";
+import { visit } from "@ember/test-helpers";
+import td from "testdouble";
 
-moduleForAcceptance('Acceptance | new relic browser');
+import {
+  createMockGlobal,
+  preserveGlobalNewRelic
+} from "../helpers/mock-new-relic";
 
-test('Loading New Relic Browser', function(assert) {
-  visit('/');
+module("Acceptance | new relic browser", function(hooks) {
+  setupApplicationTest(hooks);
+  preserveGlobalNewRelic(hooks);
 
-  andThen(function() {
-    var newRelic = window.NREUM;
+  hooks.beforeEach(() => {
+    window.NREUM = createMockGlobal();
+  });
 
-    assert.expect(8);
+  hooks.afterEach(() => {
+    td.reset();
+  });
 
-    assert.ok(newRelic,
-      'The New Relic object (NREUM) should be added to the window');
+  test("Loading New Relic Browser", async function(assert) {
+    await visit("/");
 
-    assert.ok(typeof newRelic.noticeError === 'function',
-      'New Relic Browser should be loaded');
+    const error = new Error("Awh crap");
+    assert.throws(() => {
+      Ember.onerror(error);
+    }, "Awh crap");
+    assert.verify(window.NREUM.noticeError(error));
 
-    /* Now our errors are tracking, let's check they are
-    caught by the extra Ember events like onerror */
-
-    window.NREUM.noticeError = function(error) {
-
-      assert.ok(true,
-        'noticeError should be called by Ember.onerror');
-
-      assert.ok(error instanceof Error,
-        'noticeError should receive an error object');
-
-      assert.ok(error.name !== 'TransitionAborted',
-        'noticeError should not be called by Ember.onerror on TransitionAborted errors.');
-    };
-
-    Ember.onerror(new Error('Awh crap'));
-
-    const transitionError = new Error('Ember Transition Aborted Test');
+    const transitionError = new Error("Ember Transition Aborted Test");
     transitionError.name = "TransitionAborted";
     Ember.onerror(transitionError);
 
-    Ember.Logger.error('Whoops', 'We done messed up', {});
+    assert.equal(
+      td.explain(window.NREUM.noticeError).callCount,
+      1,
+      "Was not called for the `transitionError`"
+    );
 
+    Ember.Logger.error("Whoops", "We done messed up", {});
+
+    assert.equal(
+      td.explain(window.NREUM.noticeError).callCount,
+      2,
+      "Was called when logging an error"
+    );
   });
-});
 
-test('console.error from Ember.Logger.error correctly shows messages', function(assert) {
-  visit('/');
+  test("console.error from Ember.Logger.error correctly shows messages", async function(assert) {
+    await visit("/");
 
-  andThen(function() {
-
-    console.error = function (message) {
+    // eslint-disable-next-line no-console
+    console.error = function(message) {
       assert.strictEqual(
         message.toString(),
-        'Error: Whoops We done messed up',
-        'Shows messages space-separated'
+        "Error: Whoops We done messed up",
+        "Shows messages space-separated"
       );
     };
 
-    Ember.Logger.error('Whoops', 'We done messed up');
+    Ember.Logger.error("Whoops", "We done messed up");
+  });
+
+  test("Route Mixin: tells New Relic when a route changes", async function(assert) {
+    await visit("/");
+
+    assert.verify(window.NREUM.setCurrentRouteName("index"));
   });
 });
