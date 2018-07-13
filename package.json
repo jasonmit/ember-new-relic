@@ -19,7 +19,6 @@
   },
   "scripts": {
     "build": "ember build",
-    "posttest": "cd ../",
     "lint:js": "eslint .",
     "start": "ember serve",
     "test": "ember test",

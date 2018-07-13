@@ -53,6 +53,9 @@ module.exports = {
     },
     {
       files: ['node-tests/**/*.js'],
+      env: {
+        qunit: true
+      },
       rules: {
         'node/no-unpublished-require': 'off'
       }
