@@ -17,7 +17,7 @@ module.exports = function(defaults) {
 
   let app = new EmberAddon(defaults, {
     // Add options here
-    'ember-new-relic': options
+    'ember-metrics-new-relic': options
   });
 
   /*

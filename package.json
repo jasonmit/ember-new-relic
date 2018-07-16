@@ -1,5 +1,5 @@
 {
-  "name": "@jasonmit/ember-new-relic",
+  "name": "ember-metrics-new-relic",
   "version": "0.7.1",
   "description": "Adds New Relic to your Ember CLI app based on the app's environment",
   "keywords": [

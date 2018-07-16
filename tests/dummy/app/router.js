@@ -1,7 +1,7 @@
 import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
 
-import NewRelicRouterMixin from 'ember-new-relic/mixins/router';
+import NewRelicRouterMixin from 'ember-metrics-new-relic/mixins/router';
 
 const Router = EmberRouter.extend(NewRelicRouterMixin, {
   location: config.locationType,

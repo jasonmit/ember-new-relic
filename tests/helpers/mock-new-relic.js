@@ -1,5 +1,5 @@
 import td from 'testdouble';
-import { SUPPORTED_METHODS } from 'ember-new-relic/services/new-relic';
+import { SUPPORTED_METHODS } from 'ember-metrics-new-relic/services/new-relic';
 
 // For some reason, `setToken` is not documented but is called by something
 const ALL_METHODS = [...SUPPORTED_METHODS, 'setToken'];

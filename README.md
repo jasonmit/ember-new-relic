@@ -1,5 +1,4 @@
-Ember New Relic [![Build Status](https://travis-ci.org/sir-dunxalot/ember-new-relic.svg?branch=master)](https://travis-ci.org/sir-dunxalot/ember-new-relic) [![npm](https://img.shields.io/npm/v/ember-new-relic.svg)](https://www.npmjs.com/package/ember-new-relic)
-======
+# `ember-metrics-new-relic`
 
 This Ember addon adds [New Relic Browser](http://newrelic.com/browser-monitoring) to your app. All PRs and issues are welcome.
 
@@ -15,7 +14,7 @@ This Ember addon adds [New Relic Browser](http://newrelic.com/browser-monitoring
 ## Installation
 
 ```sh
-ember install ember-new-relic
+ember install ember-metrics-new-relic
 ```
 
 ## Usage
@@ -36,7 +35,7 @@ module.exports = function(environment) {
       licenseKey: 'ef234SgE4'
     }
   };
-}
+};
 ```
 
 ### Configuration
@@ -57,10 +56,10 @@ module.exports = function(environment) {
       errorBeacon: 'bam.nr-data.net',
       licenseKey: 'ef234SgE4',
       spaMonitoring: true,
-      sa: 1,
+      sa: 1
     }
   };
-}
+};
 ```
 
 Value and descriptions for all of the above can be found in your New Relic Browser's application settings.
@@ -69,7 +68,7 @@ It is likely you will only have to set `applicationId`, `licenseKey`, and `agent
 
 #### SPA Monitoring
 
-New Relic released [SPA Monitoring](https://docs.newrelic.com/docs/browser/single-page-app-monitoring/get-started/welcome-single-page-app-monitoring) on July 12th 2016. By default, this addon does *not* use SPA Monitoring.
+New Relic released [SPA Monitoring](https://docs.newrelic.com/docs/browser/single-page-app-monitoring/get-started/welcome-single-page-app-monitoring) on July 12th 2016. By default, this addon does _not_ use SPA Monitoring.
 
 If you want to use New Relic SPA Monitoring, you must enable `spaMonitoring` in your configuration as follows:
 
@@ -81,10 +80,10 @@ module.exports = function(environment) {
 
   var ENV = {
     newRelic: {
-      spaMonitoring: true,
+      spaMonitoring: true
     }
   };
-}
+};
 ```
 
 This will replace the default New Relic code snippet with the New Relic SPA code snippet.
@@ -108,7 +107,7 @@ module.exports = function(environment) {
   if (environment !== test) {
     ENV.newRelic.applicationId = '97bfuo3FFd3';
   }
-}
+};
 ```
 
 You can also use different application IDs for different environments:
@@ -130,25 +129,25 @@ module.exports = function(environment) {
   } else if (environment === 'production') {
     ENV.newRelic.applicationId = 'f99FJ930sp';
   }
-}
+};
 ```
 
 ### Manual Script Loading
 
 By default the New Relic code snippet is imported into `vendor.js`.
 
-If you want to manually import the snippet from an external JS file, configure `ember-cli-build.js` with `ember-new-relic` options as follows:
+If you want to manually import the snippet from an external JS file, configure `ember-cli-build.js` with `ember-metrics-new-relic` options as follows:
 
 ```js
 /* ember-cli-build.js */
 module.exports = function(defaults) {
-    var app = new EmberApp(defaults, {
-      'ember-new-relic': {
-        importToVendor: false
-      }
-    });
+  var app = new EmberApp(defaults, {
+    'ember-metrics-new-relic': {
+      importToVendor: false
+    }
+  });
 
-    return app.toTree();
+  return app.toTree();
 };
 ```
 
@@ -163,18 +162,18 @@ Prepare your `app/index.html` with the New Relic script, placed above the `vendo
 
 The New Relic code's default output path is `new-relic.js`, accessible at the root of the output folder.
 
-If you want to change the output path, configure `ember-cli-build.js` with `ember-new-relic` options as follows:
+If you want to change the output path, configure `ember-cli-build.js` with `ember-metrics-new-relic` options as follows:
 
 ```javascript
 /* ember-cli-build.js */
 module.exports = function(defaults) {
-    var app = new EmberApp(defaults, {
-      'ember-new-relic': {
-        outputPath: 'assets/new-relic.js'
-      }
-    });
+  var app = new EmberApp(defaults, {
+    'ember-metrics-new-relic': {
+      outputPath: 'assets/new-relic.js'
+    }
+  });
 
-    return app.toTree();
+  return app.toTree();
 };
 ```
 
@@ -193,16 +192,17 @@ module.exports = function(environment) {
   var ENV = {
     newRelic: {
       licenseKey: 'ef234SgE4',
-      applicationId: '97bfuo3FFd3',
+      applicationId: '97bfuo3FFd3'
     },
 
     contentSecurityPolicy: {
       'connect-src': "'self' https://*.nr-data.net",
       'img-src': "'self' https://*.nr-data.net",
-      'script-src': "'self' http://*.newrelic.com https://*.nr-data.net http://*.nr-data.net",
-    },
+      'script-src':
+        "'self' http://*.newrelic.com https://*.nr-data.net http://*.nr-data.net"
+    }
   };
-}
+};
 ```
 
 ## Development

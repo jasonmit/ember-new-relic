@@ -1,4 +1,4 @@
 export {
   default,
   initialize
-} from 'ember-new-relic/instance-initializers/new-relic';
+} from 'ember-metrics-new-relic/instance-initializers/new-relic';

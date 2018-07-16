@@ -6,7 +6,7 @@ import {
   createMockGlobal,
   preserveGlobalNewRelic
 } from '../../helpers/mock-new-relic';
-import { SUPPORTED_METHODS } from 'ember-new-relic/services/new-relic';
+import { SUPPORTED_METHODS } from 'ember-metrics-new-relic/services/new-relic';
 
 module('Unit | Service | new relic', function(hooks) {
   setupTest(hooks);
