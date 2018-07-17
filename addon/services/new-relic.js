@@ -1,4 +1,5 @@
 import Service from '@ember/service';
+import { computed } from '@ember/object';
 
 const REGULAR_METHODS = [
   'addPageAction',
@@ -63,5 +64,26 @@ export default Service.extend({
         ? NREUM[method].bind(NREUM)
         : stubbedInteractionMethod;
     }
+  },
+
+  info: computed({
+    get() {
+      return window.NREUM.info;
+    },
+    set(_key, value) {
+      window.NREUM.info = value;
+
+      return value;
+    }
+  }),
+
+  destroyNREUM() {
+    window.NREUM = undefined;
+  },
+
+  willDestroy() {
+    this.destroyNREUM();
+
+    this._super(...arguments);
   }
 });

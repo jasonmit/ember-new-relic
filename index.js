@@ -7,18 +7,28 @@ const replace = require('broccoli-string-replace');
 module.exports = {
   name: 'ember-metrics-new-relic',
 
-  treeForAddon(tree) {
-    const superTree = this._super.treeForAddon.call(this, tree);
+  included() {
+    this._super.included.call(this, ...arguments);
 
-    const spaSnippet = fs.readFileSync(
+    const snippetBuffer = fs.readFileSync(
       path.resolve(__dirname, 'new-relic-snippets/pro-spa.js')
     );
 
+    if (snippetBuffer) {
+      this.snippet = snippetBuffer.toString();
+    } else {
+      throw new Error('Could not read New Relic snippet');
+    }
+  },
+
+  treeForAddon(tree) {
+    const superTree = this._super.treeForAddon.call(this, tree);
+
     const treeWithSnippet = replace(superTree, {
-      files: ['metrics-adapters/new-relic.js'],
+      files: [`${this.name}/metrics-adapters/new-relic.js`],
       pattern: {
         match: /NEW_RELIC_SNIPPET/g,
-        replacement: spaSnippet
+        replacement: this.snippet
       }
     });
 

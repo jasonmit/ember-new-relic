@@ -43,17 +43,45 @@ module('Unit | Service | new relic', function(hooks) {
     });
   });
 
-  module('with the New Relic global', function() {
+  module('with the New Relic global', function(hooks) {
+    hooks.beforeEach(function() {
+      window.NREUM = createMockGlobal();
+    });
+
     test('it proxies methods to the New Relic global', function(assert) {
       assert.expect(SUPPORTED_METHODS.length);
 
-      window.NREUM = createMockGlobal();
-
       let service = this.owner.lookup('service:new-relic');
+
       for (const method of SUPPORTED_METHODS) {
         service[method]();
         assert.verify(window.NREUM[method]());
       }
+    });
+
+    test('it can configure the New Relic global', function(assert) {
+      let service = this.owner.lookup('service:new-relic');
+      service.set('info', { foo: 'bar' });
+
+      assert.deepEqual(
+        window.NREUM.info,
+        { foo: 'bar' },
+        'It sets the info on the New Relic global'
+      );
+      assert.deepEqual(
+        service.get('info'),
+        { foo: 'bar' },
+        'The config can be read from the service'
+      );
+    });
+
+    test('it can remove the New Relic global', function(assert) {
+      window.NREUM = createMockGlobal();
+
+      let service = this.owner.lookup('service:new-relic');
+      service.destroyNREUM();
+
+      assert.notOk(window.NREUM);
     });
   });
 });
