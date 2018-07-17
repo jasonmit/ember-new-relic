@@ -56,7 +56,7 @@ export default Service.extend({
       this[method] = NREUM
         ? NREUM[method].bind(NREUM)
         : method === 'interaction'
-          ? () => new FakeBrowserInteractionEvent()
+          ? stubbedInteractionMethod
           : stubbedRegularMethod;
     }
   }
