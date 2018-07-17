@@ -1,5 +1,5 @@
 {
-  "name": "@jasonmit/ember-new-relic",
+  "name": "ember-metrics-new-relic",
   "version": "0.7.1",
   "description": "Adds New Relic to your Ember CLI app based on the app's environment",
   "keywords": [
@@ -22,12 +22,10 @@
     "lint:js": "eslint .",
     "start": "ember serve",
     "test": "ember test",
-    "test:node": "qunit-cli node-tests",
-    "test:all": "ember try:each && qunit-cli node-tests"
+    "test:all": "ember try:each"
   },
   "dependencies": {
-    "broccoli-file-creator": "^1.1.1",
-    "broccoli-merge-trees": "^1.2.4",
+    "broccoli-string-replace": "^0.1.2",
     "ember-cli-babel": "^6.6.0"
   },
   "devDependencies": {
@@ -49,6 +47,7 @@
     "ember-export-application-global": "^2.0.0",
     "ember-load-initializers": "^1.1.0",
     "ember-maybe-import-regenerator": "^0.1.6",
+    "ember-metrics": "^0.12.1",
     "ember-resolver": "^4.0.0",
     "ember-source": "~3.2.0",
     "ember-source-channel-url": "^1.0.1",
@@ -62,7 +61,6 @@
     "loader.js": "^4.2.3",
     "prettier": "^1.13.7",
     "qunit": "^0.9.1",
-    "qunit-cli": "^0.2.0",
     "qunit-dom": "^0.6.2",
     "testdouble": "^2.0.0"
   },

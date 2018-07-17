@@ -22,10 +22,16 @@ module.exports = function(environment) {
       // when it is created
     },
 
-    newRelic: {
-      applicationId: '13358812', // A dedicated app for testing this addon
-      licenseKey: 'fd2c3e04d0'
-    },
+    metricsAdapters: [
+      {
+        name: 'NewRelic',
+        environments: ['all'],
+        config: {
+          applicationID: '13358812', // A dedicated app for testing this addon
+          licenseKey: 'fd2c3e04d0'
+        }
+      }
+    ],
 
     contentSecurityPolicy: {
       'connect-src': "'self' https://*.nr-data.net",
