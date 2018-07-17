@@ -1,40 +1,38 @@
 import Service from '@ember/service';
 
-const REGULAR_METHODS = [
+// Method Reference:
+// https://docs.newrelic.com/docs/browser/new-relic-browser/browser-agent-spa-api
+export const SUPPORTED_METHODS = [
   'addPageAction',
   'addRelease',
   'addToTrace',
   'finished',
+  'interaction',
   'noticeError',
+  'setCurrentRouteName',
   'setCustomAttribute',
   'setErrorHandler',
-  'setPageViewName',
-  'createTimer',
-  'setCurrentRouteName'
+  'setPageViewName'
 ];
 
-const INTERACTION_RETURNING_METHODS = [
+const INTERACTION_METHODS = [
+  'createTracer',
   'end',
   'getContext',
   'ignore',
-  'interaction',
   'onEnd',
   'save',
   'setAttribute',
   'setName'
 ];
 
-// Method Reference:
-// https://docs.newrelic.com/docs/browser/new-relic-browser/browser-agent-spa-api
-export const SUPPORTED_METHODS = [
-  ...REGULAR_METHODS,
-  ...INTERACTION_RETURNING_METHODS
-];
-
 class FakeBrowserInteractionEvent {
   constructor() {
-    for (const method of INTERACTION_RETURNING_METHODS) {
-      this[method] = stubbedInteractionMethod;
+    for (const method of INTERACTION_METHODS) {
+      this[method] =
+        method === 'createTracer'
+          ? (_name, cb) => cb
+          : stubbedInteractionMethod;
     }
   }
 }
@@ -54,14 +52,12 @@ export default Service.extend({
 
     const { NREUM } = window;
 
-    for (const method of REGULAR_METHODS) {
-      this[method] = NREUM ? NREUM[method].bind(NREUM) : stubbedRegularMethod;
-    }
-
-    for (const method of INTERACTION_RETURNING_METHODS) {
+    for (const method of SUPPORTED_METHODS) {
       this[method] = NREUM
         ? NREUM[method].bind(NREUM)
-        : stubbedInteractionMethod;
+        : method === 'interaction'
+          ? () => new FakeBrowserInteractionEvent()
+          : stubbedRegularMethod;
     }
   }
 });

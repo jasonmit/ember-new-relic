@@ -41,6 +41,15 @@ module('Unit | Service | new relic', function(hooks) {
         .setAttribute()
         .setAttribute();
     });
+
+    test('it correctly stubs `createTracer`', function(assert) {
+      let service = this.owner.lookup('service:new-relic');
+      let cb = td.function();
+
+      service.interaction().createTracer('foo', cb)();
+
+      assert.verify(cb());
+    });
   });
 
   module('with the New Relic global', function() {
